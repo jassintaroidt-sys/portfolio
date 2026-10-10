@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.*.local
+qa/shots/
+.DS_Store
+Thumbs.db

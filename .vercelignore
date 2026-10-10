@@ -1,0 +1,5 @@
+reference/
+qa/
+docs/
+*.pdf
+node_modules/

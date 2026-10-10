@@ -1,0 +1,121 @@
+/* ──────────────────────────────────────────────
+   Design System Tokens — §2 BRIEF
+   All color tokens as CSS custom properties.
+   ────────────────────────────────────────────── */
+
+:root {
+  /* §2.1 Pink */
+  --hot-pink: #FF2E93;
+  --barbie-pink: #E91E8C;
+  --raspberry: #D81B72;
+  --bubblegum: #FF8DC7;
+  --candy-pink: #FFB3D9;
+  --blush: #FFD6E8;
+  --rose-quartz: #F7CAD0;
+  --powder-pink: #FDE4EC;
+  --dusty-rose: #E8A5B8;
+  --cherry-red: #E5173F;
+  --lipstick-red: #C8102E;
+  --coral-pop: #FF6F6F;
+  --peach-fizz: #FFB38A;
+  --apricot: #FFD3B0;
+
+  /* §2.2 Purple / Lavender */
+  --lavender: #BFA8E5;
+  --lilac: #D4C1F5;
+  --wisteria: #A98BDA;
+  --orchid: #DA9AF2;
+  --grape-soda: #7B4FB8;
+  --berry: #7A2E5C;
+  --aubergine: #4B1D4F;
+  --plum-night: #2A0F2E;
+
+  /* §2.3 Mint / Green / Pastel Blue */
+  --mint-cream: #D4F2E4;
+  --pastel-mint: #A8E6CF;
+  --matcha: #B7D9A8;
+  --sage: #A9C4A0;
+  --baby-blue: #BFE3F5;
+  --sky-pastel: #A7D8F5;
+  --periwinkle: #B8C4F2;
+  --notebook-blue: #8FB8E8;
+  --steel-lilac: #B9B8CC;
+
+  /* §2.4 Yellow / Cream / Paper */
+  --butter: #FFF1A8;
+  --lemon-chiffon: #FFF6C9;
+  --vanilla: #FFF8EE;
+  --aged-paper: #F3E3B8;
+  --honey: #F6D76B;
+  --milk-white: #FFFDF9;
+  --pure-white: #FFFFFF;
+
+  /* §2.5 Neutral & Metal */
+  --ink: #1B1017;
+  --espresso: #2B1B17;
+  --cocoa: #5A3A2E;
+  --walnut: #7A4A32;
+  --pearl: #F4EFF1;
+  --warm-grey: #D9D3D6;
+  --chrome: #C9CCD5;
+  --gold: #D4A64A;
+  --champagne: #EBD08C;
+  --staple-red: #D7263D;
+
+  /* §2.6 Named Gradients */
+  --grad-plum-night: linear-gradient(160deg, #2A0F2E 0%, #4B1D4F 55%, #7A2E5C 100%);
+  --grad-cotton-candy: linear-gradient(135deg, #FFD6E8 0%, #E3D4FA 50%, #CDEBF8 100%);
+  --grad-bubblegum: linear-gradient(135deg, #FF8DC7 0%, #FF2E93 100%);
+  --grad-lilac-mint: linear-gradient(135deg, #D4C1F5 0%, #D4F2E4 100%);
+
+  /* §2.7 Additional */
+  --mist: #E9EBF2;
+  --cloud: #E3E6EE;
+  --locker-steel-hi: #DADCE8;
+  --locker-steel-mid: #B9B8CC;
+  --locker-steel-lo: #9A9BB2;
+  --locker-rail: #34323F;
+  --locker-rivet: #7C7D91;
+  --chrome-hi: #FFFFFF;
+  --chrome-lo: #8F93A3;
+  --handle-black: #14121A;
+  --open-rail: #F7B8D6;
+  --open-ceiling: #FFC2E0;
+  --open-shelf: #F7A8CF;
+  --open-shelf-edge: #FFE3F0;
+  --interior-deep: #5A1E45;
+  --interior-wall: #8E3568;
+  --gold-1: #FFF3C4;
+  --gold-2: #F0D27A;
+  --gold-3: #D4A64A;
+  --gold-4: #9A6F1E;
+  --leather-pink-hi: #FFC6E0;
+  --camera-mint: #A8E6CF;
+  --camera-pink: #F8C8DC;
+  --camera-lilac: #CDB8EE;
+  --camera-blue: #B5D8F0;
+  --wood-hi: #A9714F;
+  --book-terracotta: #C98B7F;
+  --book-dusty-pink: #E8B7B7;
+  --book-sage: #A9C4A0;
+  --book-lavender: #BFA8E5;
+  --book-mint: #B9D9C0;
+  --book-babyblue: #BFD9EA;
+  --book-cream: #F1E7D8;
+  --book-salmon: #F4A58A;
+  --book-butter: #F3E08F;
+  --washi-pink: rgba(255, 179, 217, 0.72);
+  --washi-mint: rgba(168, 230, 207, 0.72);
+  --washi-lilac: rgba(212, 193, 245, 0.74);
+  --washi-butter: rgba(255, 241, 168, 0.76);
+  --twine: #C9A66B;
+  --shadow-pink: rgba(233, 30, 140, 0.25);
+  --shadow-plum: rgba(42, 15, 46, 0.35);
+  --glow-hot: rgba(255, 46, 147, 0.55);
+  --disc-rim: #C9CCD5;
+  --disc-hub: #E6E8F0;
+
+  /* §3 Typography tokens */
+  --headline: clamp(2.1rem, 1.2rem + 3.6vw, 4.125rem); /* 66px in desktop */
+  --headline-narration-gap: 1.5rem; /* gap Headline -> Narration */
+}

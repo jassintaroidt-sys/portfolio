@@ -1,0 +1,11 @@
+export { Certificate } from './Certificate';
+export { Trophy } from './Trophy';
+export { MagazineStack } from './MagazineStack';
+export { Camera } from './Camera';
+export { Shoes } from './Shoes';
+export { Polaroids } from './Polaroids';
+export { Envelope } from './Envelope';
+export { Books } from './Books';
+export { Notes } from './Notes';
+export { Bag } from './Bag';
+export { Umbrella } from './Umbrella';

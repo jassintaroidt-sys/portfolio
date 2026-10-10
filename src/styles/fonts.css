@@ -1,0 +1,66 @@
+/* ──────────────────────────────────────────────
+   Fonts — §3 BRIEF
+   Self-hosted fonts via @fontsource + Sentient
+   ────────────────────────────────────────────── */
+
+/* — @fontsource imports (must precede all other CSS statements) — */
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/400-italic.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/anton/400.css';
+@import '@fontsource/caveat/400.css';
+@import '@fontsource/caveat/700.css';
+@import '@fontsource/pinyon-script/400.css';
+@import '@fontsource/bodoni-moda/400.css';
+@import '@fontsource/bodoni-moda/700.css';
+@import '@fontsource/bodoni-moda/900.css';
+@import '@fontsource/bebas-neue/400.css';
+@import '@fontsource/dm-mono/400.css';
+@import '@fontsource/special-elite/400.css';
+@import '@fontsource/permanent-marker/400.css';
+@import '@fontsource/fraunces/400.css';
+@import '@fontsource/fraunces/400-italic.css';
+@import '@fontsource/fraunces/700.css';
+@import '@fontsource/fraunces/700-italic.css';
+@import '@fontsource/archivo-black/400.css';
+@import '@fontsource/patrick-hand/400.css';
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/700.css';
+@import '@fontsource/oswald/400.css';
+@import '@fontsource/oswald/700.css';
+@import '@fontsource/great-vibes/400.css';
+
+/* — Sentient from Fontshare (self-hosted) — */
+/* Fallback to Fraunces until real Sentient woff2 files are placed in public/fonts/sentient/ */
+@font-face {
+  font-family: 'Sentient';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/sentient/Sentient-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Sentient';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/sentient/Sentient-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Sentient';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/sentient/Sentient-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Sentient';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/sentient/Sentient-BoldItalic.woff2') format('woff2');
+}

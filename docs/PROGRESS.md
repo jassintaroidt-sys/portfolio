@@ -1,0 +1,412 @@
+# Progress Tracking — Creative Portfolio
+
+## FASE 0: Project Foundation (Fondasi Proyek) — COMPLETED
+- [x] Vite + React 18 + TypeScript strict + Tailwind v3.4 setup
+- [x] Packages installed (`lenis`, `gsap`, `@fontsource/*`, `html-to-image`, `vitest`, `@playwright/test`, `image-size`, `sharp`)
+- [x] Font declarations in `src/styles/fonts.css` with `@font-face` for Sentient and fallback to Fraunces
+- [x] Design tokens: All color tokens §2 (2.1–2.7) defined in `src/styles/tokens.css` and extended in `tailwind.config.ts`
+- [x] Named gradients (--grad-plum-night, --grad-cotton-candy, --grad-bubblegum, --grad-lilac-mint)
+- [x] Dev-only internal token gallery at `/#/__tokens`
+- [x] Typography styles (`.headline`, `.narration`, fluid clamp tokens) & textures (`.grain`, `.grain-dark` per §4)
+- [x] Media helper `src/lib/media.ts` per §8.8 + `src/vite-env.d.ts` + `media-manifest.ts` per §19
+- [x] Scripts: `check-media.mjs`, `check-no-reference.mjs`, `make-posters.sh`, `optimize-media.mjs`
+- [x] Configuration files: `vercel.json`, `.vercelignore`, `.gitignore`, `tsconfig.json`, `vitest.config.ts`, `playwright.config.ts`
+- [x] Base styles in `src/styles/base.css` (viewport-fit, svh/dvh, focus-visible outline, reduced-motion)
+- [x] Quality gates: `npm run build`, `npm run typecheck`, `npm test`, `npm run check:refs`, `npm run check:media`
+
+## FASE 1: Core Systems & Reusable Primitives — COMPLETED
+- [x] Lenis Provider (`src/lib/scroll.tsx`): smooth scroll via Lenis only, `html.lenis { scroll-behavior: auto }`, `scrollTo`, `lockScroll` / `unlockScroll`, `data-lenis-prevent`.
+- [x] Seed PRNG (`src/lib/seed.ts`): xmur3 + mulberry32 deterministic PRNG without Math.random.
+- [x] Torn Edge Math & Path Generator (`src/lib/torn.ts`): 3-layer noise (macro, medium, fine micro-fibers), protruding fibers (2-8px), hanging pieces, thickness/inner fibers, closed paths.
+- [x] Unit Tests (`src/lib/torn.test.ts`): 100% passed (determinism, no NaN, closed SVG path, amplitude <= height).
+- [x] `<TornSection>`, `<TornFiberEdge>`, `<TornHighlight>`: Exact DOM §6.2, 2-layer mask §6.3, wrapper drop-shadow, debounced ResizeObserver (±100ms) with 64px width bucketing, `pointer-events: none`, `aria-hidden="true"`, negative margin-top + padding-top on next section (`.torn-next-section`), section grain clipped to contour.
+- [x] Demo Page `/#/__torn`: Multi-color torn paper transition with seeds 101/202/303, plus 300svh tall section with sticky card testing un-stretched mask geometry.
+- [x] UI Components (`src/components/ui/`):
+  - `HoverLabel`: price-tag paper style, dashed border, twine loop, portal to top layer, collision detection (top -> side -> bottom), touch tap/long-press mode.
+  - `StickerButton`: die-cut pink glitter button, tilt, hard-soft shadow, hover jiggle & translateY(-2px), min 44x44px touch area.
+  - `Pushpin`: 3D pin in cherry-red, hot-pink, wisteria, and gold with shiny head & shadow.
+  - `PaperNote`: aged paper note with paper texture and lifted corner shadow.
+  - `PhotoFrame`: thick white frame with multi-layer shadow, object-fit contain (never crops photos).
+  - `Overlay`: full-screen dialog with focus trap, Esc key listener, scroll lock (`lenis.stop()`), sticker-pop entrance animation, `role="dialog" aria-modal="true"`, focus restore on close, inner scrollable area tagged with `data-lenis-prevent`.
+  - `Carousel`: arrow navigation, pointer drag/swipe, keyboard arrows, snap alignment.
+  - `SafeImage`: lazy loading, decoding async, crossOrigin anonymous, picture with webp fallback, zero CLS aspect-ratio reservation.
+  - `SafeVideo`: IntersectionObserver autoplay/pause, global active video queue (max 6 active videos concurrently), muted playsinline loop, poster fallback.
+  - `Preloader`: lightweight sticker badge preloader, max 2 seconds timeout, never blocks.
+  - `Footer`: DM Mono typography, 3-column layout (2026, Jassinta Roid Triniti, right element) with light and dark themes.
+- [x] Hash Route Manager (`src/lib/hashRoute.ts` & `src/components/pages/RouteOverlayManager.tsx`): handles all §7.1 routes (`#/participation`, `#/achievement`, `#/my-message`, `#/magazine-art`, `#/photography`, `#/my-strategy`, `#/notes`, `#/strategy/:variant`), back button closes overlay without scroll jumping.
+- [x] Table of Contents Navigation (`src/components/nav/`): floating `TocButton` "INDEX", paper-styled `TocOverlay`, 2-column `TocInline`, auto-hide logic.
+- [x] UI Showcase Page `/#/__ui`: interactive gallery displaying all 11 UI primitives with live demos.
+- [x] Quality Gates: `npm run typecheck` (PASS), `npm test` (PASS), `npm run check:refs` (PASS), `npm run check:media` (PASS), `npm run build` (PASS).
+## FASE 2: Opening — Closed Locker (Loker Tertutup) — COMPLETED
+- [x] Fit Algorithm (`src/lib/fit.ts` & `src/lib/fit.test.ts`):
+  - Calculates `--px` scaling per §8.6 (5-door desktop mode: 5916x3469 units vs 3-door mobile mode: 3574x3469 units).
+  - Listens to visualViewport & ResizeObserver with 100ms debounce.
+  - Comprehensive unit test suite covering all 11 reference device viewports (Desktop 4K/QHD/FHD/MacBook, iPad Pro/Air/Mini, Mobile iPhone Pro Max/Standard/SE, Fold).
+- [x] CSS 3D Primitives (`src/components/three/`):
+  - `Box3D`: 6 textured faces with directional lighting, 1px highlight lips, and contact drop shadow. Supports low-power LOD optimization.
+  - `Plane3D`: Lightweight 2D/3D oriented planes.
+  - `Extrude`: Multi-layer SVG/CSS extrusion along translateZ with LOD scaling (3 layers in low-power, up to 10 in standard).
+- [x] Locker Sub-components (`src/components/locker/`):
+  - `Plate`: Chrome/pink beveled plate (480x120 units) with Bebas Neue numbers and 2 dome screws.
+  - `Vent`: 5-row recessed ventilation slits (700x28 units) with dark inner shadow and highlight bottom lip.
+  - `Handle`: Recessed black cup (210x530 units), beveled chrome latch bar (78x310 units) with grip ridges, and keyhole with highlight ring.
+  - `LockerDoor`: Steel doors (01, 02, 04, 05) with outer rim, center crease, and hinge tabs; Pink Door 03 with Sentient block-highlight typography (4 lines with per-word custom backgrounds) and `<StickerButton>` ▶ OPEN.
+  - `LockerCabinet`: Master cabinet frame featuring top chrome lid, outer side rails with chrome rivets, bottom dark plinth, 4 vertical divider posts, perspective, and subtle pointer tilt (±2.5° on hover devices).
+  - `ClosedLocker`: 5-door assembly with exact positioning and dimensions matching §9.3 & `reference/loker_tertutup.png`.
+- [x] Opening Section (`src/components/sections/Opening.tsx`):
+  - Background radial gradient `--mist` to `--cloud`, clean bottom (NO torn paper in closed state).
+  - Vertical scroll lock (`lenis.stop()` + keyboard/wheel/touch event interception).
+  - Mobile swipe mode: 3 middle doors initially centered, horizontal scroll-snap, 5 dot indicators for active door.
+  - Clean footer: `2026 / Jassinta Roid Triniti / Creative Portfolio`.
+- [x] Quality Gates: `npm run typecheck` (PASS), `npm test` (PASS), `npm run check:refs` (PASS), `npm run check:media` (PASS), `npm run build` (PASS).
+
+## FASE 3: Opening — Open Locker & 3D Items (Loker Terbuka & Barang 3D) — COMPLETED
+- [x] 11 3D Items Reconstructed in SVG & CSS 3D (`src/components/items/`):
+  - `Certificate` (Interactive -> `#/participation`): 960x700 units, ornate gold leaf relief frame, double border, Bodoni Moda "CERTIFICATE", rosette medallion seal with shield & compass, hanging twine cord & gold pins.
+  - `Trophy` (Interactive -> `#/achievement`): 520x750 units, polished gold chalice with two scroll handles, vertical cylindrical specular highlights, 2-tier weighted base, contact shadow on shelf.
+  - `MagazineStack` (Interactive -> `#/magazine-art`): 740x960 units, standing magazine stack, front cover dusty rose `#EBA6C0`, Bodoni Moda 900 bold "VOGUE", "Better Things Ahead ♡" script, editorial arch illustration, barcode, spine thickness.
+  - `Camera` (Interactive -> `#/photography`): 560x365 units, "Pastelca 35mm f/2.8" rangefinder camera, mint body & pink leather texture band, lavender knurled dials, optical viewfinder & rangefinder windows, front levers, layered lens with glass sheen.
+  - `Shoes` (Decorative): 980x440 units, pair of pink retro runner sneakers in 3/4 view, nylon & suede overlays, 3 raspberry diagonal stripes, cream toothed/serrated outsole, thick cream laces, clean tongue label.
+  - `Polaroids` (Decorative): 3 suspended photo frames (280x330 each) on horizontal twine rope spanning 100% wall to wall, wooden clothespin pegs, pastel landscape vector gradients, Permanent Marker handwritten captions ("Moments", "Stories", "Memories").
+  - `Envelope` (Interactive -> `#/my-message`): 840x530 units, soft lavender paper envelope back view, triangular flap with inner shadow crease, hot-pink heart wax seal, postage stamp.
+  - `Books` (Interactive -> `#/my-strategy`): 1050x780 units, 6 standing books on left flush to wall + 10 horizontal stacked books on right, exact brief color sequence, embossed spine lines, zero title text.
+  - `Notes` (Interactive -> `#/notes`): 520x760 units, wire-o twin spiral notebook on left, pink leather cover, Bebas Neue bold "NOTES" centered, "STRATEGY & SCRIPTS", memo flag, cream page block.
+  - `Bag` (Decorative): 800x700 units, pink leather hobo shoulder bag with curved strap, chrome rings, flap with horseshoe buckle (no brand text), 2 flap patch pockets with snap buttons, zipper track & pull.
+  - `Umbrella` (Decorative): 210x880 units, folded white umbrella with black polka dots, black tie strap with snap, chrome ferrule, polished dark walnut J-hook cane handle, tilted 7.5° against right wall.
+- [x] Open Compartments & Door Cards (`src/components/locker/`):
+  - `CompartmentOpen`: 3-tier deep berry interior (`--berry` / `#7A2E5C` / `--plum-night` AO gradients), 2 visible shelf divider lips (24 units), floor rim, contact shadows.
+  - `DoorCard`: 3 paper card variants for doors 01, 03, 05:
+    - Variant `services`: Pinned with hot-pink pushpin, tag SERVICES, subtag ✦ CAPABILITIES, heading "I Can Help You With:", 7 white pills with pink checkmarks, "etc." script with sparkle star.
+    - Variant `intro`: Pinned with cherry-red pushpin, tag HELLO, I AM JASSINTA, heading "Behind the Creative Lens", 9:16 portrait video player with native `intro.mp4`, central play button, pause & mute/unmute buttons, quote footer: *"Telling stories that resonate & stay."*.
+    - Variant `stack`: Pinned with wisteria pushpin, lavender tint, tag STACK & TOOLS, subtag ▭ EXPERTISE, heading "Platform I Am Proficient in:", 7 white pills with purple checkmarks, footer "CERTIFIED & EXPERIENCED".
+  - `OpenLocker`: Assembles the 5-locker cabinet with open cabinet frame styling (pink lid, side rails, divider posts, berry plinth).
+- [x] Open Transition & Section Integration (`src/components/sections/Opening.tsx`):
+  - 700–900ms transition sequence: ▶ OPEN pop, radiant hot-pink glow wave, sparkle particles, cabinet scale bounce, crossfade to `OpenLocker`.
+  - Vertical scroll unlock via `useLenis().unlockScroll()`.
+  - Open footer (height 20px, year & name on left, `<TocInline />` on right).
+  - Bottom realistic torn paper transition with seed 101 (`TornFiberEdge` + `TornHighlight`).
+  - Floating `<TocButton isOpeningUnlocked={isLockerOpen} />` activates upon opening.
+- [x] Interactive Item Links:
+  - All 7 interactive items wrapped in `<HoverLabel>` showing their label and navigating to their respective hash overlay routes (`#/participation`, `#/achievement`, `#/magazine-art`, `#/photography`, `#/my-message`, `#/my-strategy`, `#/notes`).
+- [x] Quality Gates:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS, 9/9 tests)
+  - `npm run check:refs` (PASS, 0 forbidden strings)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS, production bundle ready)
+
+## FASE 4: Overlay Pages (Halaman Overlay §10) — COMPLETED
+- [x] Data Layer (`src/data/documents.ts`):
+  - `PARTICIPATION_ITEMS`: 5 certificates with exact metadata and English captions (§10.1).
+  - `ACHIEVEMENT_ITEMS`: 3 honors and broadcasting awards (§10.2).
+  - `VINTAGE_CINDY_PHOTOS`: 17 editorial portrait photos with original dimension metadata (§10.4).
+  - `STRATEGY_STEPS`: 7 strategic management stages with actionable AI advice tips (§10.6).
+- [x] Overlay Pages (`src/components/pages/`):
+  - `ParticipationPage` (`#/participation`): Certificate pinboard with `<PhotoFrame>`, aged paper background, cherry-red `<Pushpin>`, carousel arrow controls & keyboard left/right navigation, active captions, year & category badges.
+  - `AchievementPage` (`#/achievement`): Honors pinboard with `<PhotoFrame>`, gold `<Pushpin>`, carousel controls, award metadata.
+  - `MagazineArtPage` (`#/magazine-art`): Interactive editorial collage creator ("Let's put together a fashion magazine!"), book spread canvas, side drawer tray with 17 Vintage Cindy photos, text stickers (VOGUE, Fashion, OOTD, EDITORIAL), vector stickers (heart, star, camera, sparkle, lipstick, ribbon), drag/scale/rotate/layer controls, keyboard shortcuts (`+/-`, `[`/`]`, arrows), and export to PNG via `html-to-image`.
+  - `PhotographyPage` (`#/photography`): Vintage Cindy 1–17 editorial gallery with `<PhotoFrame>`, aged paper board, thumbnail scroller, counter, and official credit block (Model: Chindy / Photograph & Editing: Jassinta Roid Triniti).
+  - `MyMessagePage` (`#/my-message`): Notebook paper sheet with blue horizontal rules & pink vertical margin line, Caveat handwriting font, verbatim personal statement ("To Those Who Believe in the Power of a Story..."), handwritten call-to-action & signature.
+  - `MyStrategyPage` (`#/my-strategy`): 7-step winding roadmap with numbered milestone badges, strategy descriptions, tips, and circular feedback loop ribbon back to Step 03 (Content Plan).
+  - `NotesPage` (`#/notes`): Ruled notebook page with 3 colorful sticky notes (Awareness, Engagement, Conversion) and Caveat handwriting.
+- [x] Route Overlay Manager (`src/components/pages/RouteOverlayManager.tsx`):
+  - Dynamically renders each dedicated overlay page based on hash route.
+  - Integrated with `<Overlay>` focus trap, Esc key listener, scroll locking, and accessible close button.
+- [x] Quality Gates:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS, 9/9 tests)
+  - `npm run check:refs` (PASS, 0 forbidden reference strings)
+  - `npm run check:media` (PASS, 182 images & 21 videos verified)
+  - `npm run build` (PASS, production bundle generated)
+
+## FASE 5: Personal Brand (§11) — COMPLETED
+- [x] Data Layer (`src/components/sections/personal-brand/data.ts`):
+  - 10 company documents (`Elsthetic`, `Elspresso`, `Aishi Aesthetic Academy`, `Karamina Tour`, `ELS Corp`, `Aishi Beauty`, `Lassiewear`, `innalar.com`, `Independen Media`, `Ikapunija Media`).
+  - Metadata: file, company, tag, ref (`REF-ARC-001` - `REF-ARC-010`), rotation angle (`-3°, 4°, -5°, 2°, 3°, -2°, 5°, -4°, 1°, -3°`), coordinates (x, y %), parallax depth weight (0.5 - 1.0).
+- [x] Logo Renderer (`src/components/sections/personal-brand/Logo.tsx`):
+  - Local image loader via `mediaUrl('img/' + file)` with clean error handling.
+  - Fallback geometric monogram with company initials in a circular seal.
+- [x] Physical Document Sheet (`src/components/sections/personal-brand/Document.tsx`):
+  - 1:1.25 ratio physical paper sheet with thin black border (`border: 1px solid #000`).
+  - Subtle paper grain texture and multi-tier paper drop shadows.
+  - Staple accent in top-left corner (`--staple-red`).
+  - Archival document numbering (`01 / 10` - `10 / 10`), category badge, and reference code.
+  - Hover micro-interactions (`translateY(-8px)`, deeper drop shadow, glow on accent tag & number).
+- [x] Hero & Editorial Typography (`src/components/sections/personal-brand/Hero.tsx`):
+  - Giant sans typography ("WHICH COMPANIES HAVE I WORKED FOR?") in Anton with fluid clamp size and line-height 0.9.
+  - Transparent cutout portrait (`foto_jassinta_duduk.png`) positioned dynamically next to the typography.
+  - Transparent/silent placeholder when image is missing or loading.
+- [x] Document Canvas & Layouts (`src/components/sections/personal-brand/DocumentCanvas.tsx`):
+  - Desktop: Freeform editorial paper collage with smooth mouse parallax (up to ±24px lerp) based on document depth.
+  - Mobile: Clean 2-column responsive grid flow, touch-optimized, without horizontal scrollbar.
+- [x] Master Section (`src/components/sections/PersonalBrand.tsx`):
+  - Mounted on pure white canvas (`--pure-white` / `#FFFFFF`) per §11.
+  - Integrated into main single-page layout (`src/App.tsx`).
+- [x] Quality Gates:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS)
+
+## FASE 6: Writing Portfolio (§12) — COMPLETED
+- [x] Data Layer (`src/data/cassette.ts`):
+  - 11 works mapped verbatim per §12.3 with title, author, date, media, image (`IMN_*`, `innalar_*`, `Ikapunija_*`), and external URLs (or null for unpublished).
+- [x] Reusable Section Hero (`src/components/hero/SectionHero.tsx`):
+  - Pattern adhering to §12.1, §13.1, §14.1, §15.1.
+  - Headline ("Storytelling Through Screens" with italic hot-pink accent & bold Sentient typography).
+  - Narration with exact fluid typography and `--headline-narration-gap`.
+  - 6 scattered 1:1 image reveals (`IMN_1.png`, `IMN_2.png`, `innalar_1.png`, `innalar_2.png`, `Ikapunija_1.png`, `Ikapunija_2.png`) with mask wipe + scale entrance, hover lift/rotation, responsive exclusions, and subtle mouse parallax.
+- [x] 3D Disc Components (`src/components/cassette/`):
+  - `Disc.tsx`: Circular artwork with circular mask, chrome outer rim (`--disc-rim`), vinyl micro-groove texture, conic specular sheen, central transparent hub & spindle hole (`--disc-hub`), floor contact shadow, and 3D perspective rotation (angled inwards, center disc largest & sharpest).
+  - Center disc click interaction: opens live published article in new tab with `target="_blank" rel="noopener noreferrer"`; for unpublished campus articles, displays accessible "Not published online" badge.
+  - `DiscInfo.tsx`: Top-left metadata card with thin dividing lines for TITLE, AUTHOR, DATE, and MEDIA, seamlessly updating with the active disc.
+  - `DiscRow.tsx`: Interactive 3D carousel with keyboard arrow keys, touch swipe/drag, Prev/Next navigation, and large uppercase tracking title below following the center disc.
+- [x] Master Section (`src/components/sections/WritingPortfolio.tsx`):
+  - ID `#writing-portfolio` linked to floating Table of Contents.
+  - Realistic hand-torn paper bottom edge with seed 202 (`<TornSection seed={202}>` with fiber edge and highlight).
+  - Integrated into main single-page layout (`src/App.tsx`).
+- [x] Quality Gates:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS)
+
+## FASE 7: Content Marketing Specialist (§13) — COMPLETED
+- [x] Data Layer (`src/data/content.ts`):
+  - 15 multimedia content items with exact metadata, media specifications, live platform links, detailed creative insights, and standardized performance metrics (views, likes, comments, saves, shares).
+- [x] Section Hero (`src/components/sections/ContentMarketing.tsx`):
+  - Headline ("From Ordinary Content to Memorable Stories" in Sentient with candy-pink bold italic lead and white bold tail).
+  - Narration on algorithmic curiosity and audience psychology.
+  - 6 scattered 9:16 vertical video reveals (`Hasil Konten Hardselling Lassiewear.mp4`, `kecantikan_2.mp4`, `Hasil Konten Education Lassiewear.mp4`, `kuliner_2.mp4`, `travel_1.mp4`, `travel_2.mp4`) with entrance mask wipe, hover scale, and muted playsinline playback.
+- [x] Catwalk Runway Stage (`src/components/runway/`):
+  - Dynamic ambient background: active media blurred at base + `--grad-plum-night` at 50% opacity + white film grain texture.
+  - `RunwayCard.tsx`: 3D perspective catwalk (`perspective: 1200px`) where center card is un-shrunk (`min(58svh, 520px)` for 9:16 videos, `min(54svh, 470px)` for square feeds) at `translateZ(+40px)` with radiant hot-pink glow aura and auto-playing video; upstage cards at `translateZ(-240px)`, `scale(0.70)`, depth blur `1.5px`, and `rotateY(±8deg)`.
+  - `RunwayInfoModal.tsx`: Accessible dialog displaying project heading, full creative brief paragraphs, and metrics pills.
+  - `RunwayCreditModal.tsx`: Accessible dialog displaying company name, production credit, and clickable platform links with external arrow icon.
+  - Navigation controls: Left/Right arrow buttons, horizontal touch swipe with inertia, keyboard arrow navigation, counter (`01 / 15`), and date indicator.
+- [x] Master Section Integration (`src/components/sections/ContentMarketing.tsx` & `src/App.tsx`):
+  - ID `#content-marketing` registered in table of contents.
+  - Bottom realistic hand-torn paper edge with seed 303 (`<TornSection seed={303}>`).
+- [x] Quality Gates:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS, 9/9 tests)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS)
+
+## FASE 8: Example Strategy (§14) — COMPLETED
+- [x] Data Layer (`src/data/strategy.ts`):
+  - 4 strategy entries (`hard-selling`, `entertainment`, `education`, `fun`) with exact data per §14.4.
+  - `StrategyItem` interface with label, about, example, reference, credit tuples, results (views/likes/shares), seeMore URL, and footage array.
+  - `STRATEGY_ORDER` array with slug, label, and video filename for each pillar (ordered: Hard Selling, Entertainment, Education, Fun).
+  - Filename tolerant resolver using `candidates` array in `media-manifest.ts` for Lassiewear/Lassiwear variants.
+- [x] Section Hero (`src/components/sections/ExampleStrategy.tsx`):
+  - Headline: "From *Scrolling* to *Strategy*" in Sentient with Bold + Bold Italic hot-pink accents.
+  - Narration about joining a fashion brand and building content strategies.
+  - 4 floating 9:16 video reveals (`Hasil Konten Education/Hardselling/Entertainment/Fun Lassiewear.mp4`).
+- [x] 3D Curved Video Reveal Stage (`src/components/reveal3d/CurvedRevealStage.tsx`):
+  - 4-panel melengkung 3D layout with CSS `perspective`, `rotateY`, `translateZ`, and `preserve-3d`.
+  - Desktop: all 4 panels visible in curved arc formation with hover forward-push + glow + border accent + "View details" label.
+  - Mobile: 1-focus carousel with swipe, arrow buttons, dot indicators, simplified 3D.
+  - Mouse-move parallax on desktop (`pointer: fine`, respects `prefers-reduced-motion`).
+  - Keyboard navigation (ArrowLeft/ArrowRight/Enter/Space) across panels.
+  - Click → `#/strategy/{slug}` via `setHashRoute()`.
+  - `IntersectionObserver` controls video playback (muted loop, only visible panels play).
+- [x] Lantai Grid + Pantulan + Objek Lantai:
+  - Perspective aubergine grid floor (`rotateX(74deg)`, `--aubergine` grid lines, radial mask fade).
+  - `WebkitBoxReflect` on each panel (10-14% opacity mirror below).
+  - Ambient floor glow (hot-pink blur under center stage).
+  - Clapperboard sticker pink decorative 3D object (stripes, slate body text "SCENE: STRATEGY / TAKE 01 / PROD: LASSIEWEAR / DIR: JASSINTA ROID T.", sparkle badge).
+- [x] INDEX Button (kanan bawah):
+  - Pill-shaped INDEX button opens `TocOverlay` modal with table of contents.
+  - Left marker: "EXAMPLE STRATEGY / 04 PILLARS" indicator.
+- [x] TornSection seed 404:
+  - `<TornSection seed={404}>` wrapping entire section with dark gradient background (`from-[#1E0B22] via-[#140616] to-[#0D030E]`).
+  - Realistic hand-torn paper bottom edge with fiber and highlight layers.
+- [x] Overlay Info Page (`src/components/pages/StrategyDetailPage.tsx`):
+  - Routed via `#/strategy/{slug}` through `RouteOverlayManager.tsx`.
+  - Strategy Pillar badge + label heading + about description + case study highlight.
+  - Reference photo in `<PhotoFrame>` with tolerant filename resolver (Lassiewear/Lassiwear fallback).
+  - Results metrics card (Views, Likes, Shares) in 3-column grid.
+  - "Watch on Instagram" See More button → external tab.
+  - Production Credits table with role/name pairs.
+  - Footage Gallery: continuous horizontal strip of 9:16 portrait photos, drag/swipe + arrow navigation, snap scroll, reveal berurutan, numbering watermark (`01/05`), empty slots hidden automatically.
+- [x] Comment Hygiene:
+  - All `Aset_` references removed from source comments per BRIEF §0.3.
+- [x] Quality Gates:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS, 9/9 tests)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS)
+## FASE 9: Project Campus (§15) — COMPLETED
+- [x] Data Layer (`src/data/campus.ts`):
+  - 2 publications (`rush-07` and `pandora`) with exact data per BRIEF §15.3.
+  - `CampusItem` interface with id, spine, title, pages, doc, description paragraphs, and responsibilities list.
+  - Corrected wording: "Karya Karsa program, a platform" per brief note.
+- [x] Spread Engine (`src/lib/flipbook.ts`):
+  - `getCampusPages()` dynamically inspects actual dimensions from `MEDIA_MANIFEST` (never hardcoded ratios).
+  - `buildSpreads()` handles:
+    - Landscape pages (ratio > 1.1) span as a full 2-sided spread (`isLandscape: true`) without splitting or distortion.
+    - Page 1 portrait displays alone on the right (front cover).
+    - Page 1 landscape (`rush_07_1.jpg`, 1000×704, ratio 1.42) displays as an intact panoramic spread.
+    - Subsequent portrait pages pair up as (2–3), (4–5), etc.
+    - Trailing odd portrait page (e.g. Pandora page 8) displays alone on the left (back cover).
+    - Mobile mode (`isMobile: true`) renders 1 page per screen fitting width.
+  - `isSpreadInLazyWindow()` enforces lazy loading of ±4 spreads (max 9 spreads active in DOM; avoids loading 89 images simultaneously).
+  - `findSpreadIndexForPageNumber()` enables direct jump to any page number.
+- [x] Unit Tests (`src/lib/flipbook.test.ts`):
+  - 8 unit tests in vitest verifying all spread rules, landscape cover, portrait cover, inside pairs, odd trailing page, mobile mode, ±4 lazy window, and page indexing.
+- [x] Section Hero (`src/components/sections/ProjectCampus.tsx`):
+  - `<SectionHero>` with no media (`floatingMedia={[]}`).
+  - Headline: "From *The Campus* For *The Story*" with Sentient fluid typography and bold italic `--cherry-red` accents.
+  - Narration text about Jakarta State Polytechnic and identity as a creator.
+  - Textured campus peach/apricot background (`#FFE3CC` via `#FFD3B0` to `#FFC499`) with grain.
+- [x] Bookshelf Navigation (`src/components/campus/BookshelfNav.tsx`):
+  - Textured walnut wood shelf (`--walnut`) with 3D depth and bottom plinth.
+  - 2 vertical book spines: `RUSH 07` (pastel mint) and `PANDORA` (pastel lavender).
+  - 3D spine volume, embossed ribs, golden foil ribbon marker, vertical typography on desktop.
+  - Active spine shifts forward/up with highlight shadow and "OPEN" badge.
+  - Mobile: responsive horizontal book rack with pill badges.
+  - Keyboard accessible (Tab, Enter/Space, ARIA tabs).
+- [x] Publication Info Panel (`src/components/campus/CampusInfoPanel.tsx`):
+  - Editorial paper card style with subtle borders and grain.
+  - Header badge with page count ("89 PAGES TOTAL" / "8 PAGES TOTAL").
+  - Title in elegant serif, description in styled paragraphs with red accent borders.
+  - Key Responsibilities list with custom editorial bullets.
+- [x] 3D Flipbook Stage (`src/components/campus/FlipbookStage.tsx`):
+  - Perspective viewport (`perspective: 1800px`) with 3D rotation on page turns.
+  - Stacked page edges depth illusion on left and right borders.
+  - Center spine gutter shadow overlay for dual spread realism.
+  - Proper image containment (`object-contain`) preventing distortion for pages 63–65 (1000×1393) and standard pages (1000×1419).
+  - Navigation controls:
+    - Click left/right half of book to turn pages.
+    - Prev / Next arrow buttons with keyboard arrow key support (← / →).
+    - Touch swipe detection (>45px gesture).
+    - Continuous slider bar (`<input type="range">`).
+    - Direct jump to page number input field (`Go`).
+    - Quick jump to first (`|◀`) and last (`▶|`) spread.
+    - Spread indicator: `Pages x–y / N` or `Page x / N`.
+  - Lazy loading: only images within active spread ±4 window render `<img>` tags; other spreads show lightweight skeletons.
+- [x] TornSection seed 505:
+  - `<TornSection seed={505}>` wrapping section with hand-torn paper bottom edge.
+- [x] Section Integration in `App.tsx`:
+  - Mounted as section ke-5 directly after `<ExampleStrategy />`.
+  - Linked to TOC menu via `id="project-campus"`.
+- [x] All Quality Gates Passed:
+  - `npm run typecheck` (PASS)
+  - `npm test` (PASS, 17/17 tests)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS)
+
+## FASE 10: Podcast & Archive (§16, §17) — COMPLETED
+- [x] Podcast Data & Layout (`src/data/podcast.ts`, `src/components/sections/Podcast.tsx`):
+  - Eyebrow: `PODCAST` in DM Mono uppercase small.
+  - Headline: "Behind *the Microphone*" in Sentient fluid typography with Bold + Bold Italic `--cherry-red` accent.
+  - Narasi Poppins italic: "Being a producer is not simply about taking control." / "It is about becoming the most attentive listener before anyone else is ready to listen."
+  - SectionHero without media (`floatingMedia={[]}`).
+  - 2 Spotify embeds via official embed iframe (`5v0J711J5xyWvYZn8JWC76` & `4dfqcKbGRCaxuoztDsqu0d`) with lazy loading, responsive aspect ratio, studio paper card styling, fallback button "Open on Spotify", and on-air badge.
+  - Production credits block: Script: Jassinta Roid Triniti, Hosts: Tataq, Aqilah, Spotify: Kartini Podcast.
+  - `<TornSection seed={550}>` with studio atmospheric dark aubergine gradient background.
+- [x] Archive Data (`src/data/archive.ts`):
+  - 38 items (34 active works + 4 disabled entries) strictly per BRIEF §17.3.
+  - Proper formatting for Writing, Video, and Feed with accurate image/video dimensions.
+- [x] Archive Work Preview Engine (`src/lib/archiveLayout.ts`):
+  - Algoritma `computeArchiveLayout(input)` strictly adhering to BRIEF §17.2:
+    - `mediaRatio`, `W`, `H`, `gap`, `minShort` (default 96, mobile 80), `maxCopies` (default 24, video 6), `naturalW`, `maxUpscale` (1.6).
+    - Grid penuh `cols * rows`, cell scaling `mediaW = min(cellW, cellH * ratio)`.
+    - Evaluasi coverage, tie-breaker: selisih < 4% memilih salinan lebih sedikit lalu tile lebih besar.
+    - Grid dipusatkan dengan `offsetX` dan `offsetY`.
+    - Absolute rule: zero crop, zero distortion, zero overlap.
+- [x] Archive Layout Unit Tests (`src/lib/archiveLayout.test.ts`):
+  - 8 Vitest unit tests:
+    - CASE A: 16:9 preview & 16:9 media → 1 media (count: 1, coverage ~1.0).
+    - CASE B: 16:9 preview & 9:16 media → grid beberapa potret, tanpa crop, coverage jauh lebih tinggi dari 1 salinan.
+    - CASE C: Square 1:1 media dipertahankan rasio 1:1 tanpa dipaksa jadi persegi panjang.
+    - CASE D: 9:20 format mobile tinggi tanpa crop.
+    - CASE E: 32:9 ultra-wide tidak ada crop kiri/kanan.
+    - Preview portrait HP (390×600) responsif tanpa error.
+    - Batas salinan video: `maxCopies <= 6` selalu terpenuhi.
+    - Invarian absolut teruji pada 11 ukuran layar (360x640 hingga 3840x2160) × 10 rasio uji (9:16, 9:20, 3:4, 4:5, 1:1, 4:3, 3:2, 16:9, 21:9, 32:9).
+- [x] Archive Preview Component (`src/components/archive/ArchivePreview.tsx`):
+  - Recalculation otomatis pada `resize`, `orientationchange`, `visualViewport`, fullscreen, dan pergantian karya dengan `ResizeObserver` (debounce 100ms).
+  - Video multi-salinan: 1 master video + canvas mirroring memakai `requestVideoFrameCallback` (fallback `requestAnimationFrame`), dengan fallback `<video>` terbatas ≤ 6 elemen.
+  - Image multi-salinan dirender menggunakan `<img>` ber-`object-fit: contain` di dalam tile yang pas.
+  - Tile badge watermark menampilkan jumlah salinan dan persentase coverage.
+- [x] Archive Table Component (`src/components/archive/ArchiveTable.tsx`):
+  - Pengacakan Fisher-Yates sekali pada setiap page load.
+  - Penomoran ulang `01..N` dihitung strictly sesudah pengacakan.
+  - Kolom: Nomor, Judul serif italic, Company, Format, Type (DM Mono).
+  - Tombol `Read article ↗` untuk karya tulisan bertautan URL (membuka tab baru).
+  - Interaksi: hover mengganti preview, klik/tap/Enter mengunci pilihan, navigasi panah keyboard (↑ / ↓).
+  - Scrolling mandiri dengan `data-lenis-prevent="true"`.
+- [x] Archive Section Component (`src/components/sections/Archive.tsx`):
+  - Tata letak 2 kolom pada desktop (kiri tabel 7 col, kanan preview 5 col).
+  - Pada HP: preview sticky di atas, tabel di bawah.
+  - Latar media aktif dengan blur 3xl + overlay 50% plum-night + film grain putih.
+  - Footer dengan copyright `© 2026 JASSINTA ROID TRINITI`.
+  - Dibungkus `<TornSection seed={606}>` dengan robekan kertas hand-torn di dasar section.
+- [x] Integration di `App.tsx`:
+  - Mounted berurutan: `<Podcast />` (§16) dan `<Archive />` (§17).
+  - Terhubung ke Table of Contents (`id="podcast"` & `id="archive"`).
+- [x] All Quality Gates Passed:
+  - `npm run typecheck` (PASS, 0 errors)
+  - `npm test` (PASS, 25/25 tests passing)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS, dist dibuat dalam 6.51s)
+
+## FASE 11: Contact (§18) & Full Section Integration (§7) — COMPLETED
+- [x] Contact Section (`src/components/sections/Contact.tsx`):
+  - 3-column desktop layout (vertically & horizontally centered) collapsing to 1-column stacked on mobile.
+  - Atmospheric dark gradient `--aubergine` (`#4B1D4F`) to `--plum-night` (`#2A0F2E`) with white film grain overlay (`mix-blend-overlay grain`) and subtle glow flares.
+  - Column headlines in fluid Sentient up to 66px: `Email` (Bold), `Social Media` (Bold Italic), `WA/Phone` (Bold).
+  - Values in fluid Poppins italic up to 24.9px (1.556rem) with pink hover underline and "Copy" pill buttons with "✓ Copied!" feedback:
+    - `jassintaroidt@gmail.com` (`mailto:jassintaroidt@gmail.com`)
+    - `Instagram: @jassinta.roid` (`https://www.instagram.com/jassinta.roid/` in new tab)
+    - `+62 81919 0325 18` (`tel:+6281919032518` & WhatsApp `https://wa.me/6281919032518`)
+  - Screen-wide full footer per BRIEF §7.5 & §18: `2026` (left), `Jassinta Roid Triniti` (center), `INDEX` (right).
+  - Strictly no torn paper edge at the base of Contact (final section).
+- [x] Full Section Integration (§7):
+  - All 9 sections mounted in exact chronological order:
+    1. `OPENING` (`id="opening"`, torn seed 101 when open)
+    2. `PERSONAL BRAND` (`id="personal-brand"`)
+    3. `WRITING PORTFOLIO` (`id="writing-portfolio"`, torn seed 202)
+    4. `CONTENT MARKETING SPECIALIST` (`id="content-marketing"`, torn seed 303)
+    5. `EXAMPLE STRATEGY` (`id="example-strategy"`, torn seed 404)
+    6. `PROJECT CAMPUS` (`id="project-campus"`, torn seed 505)
+    7. `PODCAST` (`id="podcast"`)
+    8. `ARCHIVE` (`id="archive"`, torn seed 606)
+    9. `CONTACT` (`id="contact"`, terminal section)
+- [x] Table of Contents & In-Section Index Buttons (§7):
+  - Reusable `<EmbeddedIndexButton>` created with dark/light mode variants and accessible 44×44px touch target.
+  - Positioned strictly according to BRIEF §7:
+    - Cassette (`writing-portfolio`): kanan bawah
+    - Content Marketing (`content-marketing`): kanan atas
+    - Video Reveal (`example-strategy`): kanan bawah
+    - Archive (`archive`): kanan atas
+    - Contact (`contact`): kanan atas
+  - Floating `<TocButton>` automatically hidden when any section with an embedded INDEX button is in view (`writing-portfolio`, `content-marketing`, `example-strategy`, `archive`, `contact`), avoiding duplicate buttons.
+  - Active section indicator via `IntersectionObserver`: pulsing pink dot, pink border, and pink underline in `<TocOverlay>`.
+  - Smooth programmatic navigation using `lenis.scrollTo(element, { offset: -20, duration: 1.4 })`.
+- [x] Section Footers (§7.5):
+  - Every section implements full-width DM Mono uppercase footer: `2026` (left), `Jassinta Roid Triniti` (center), section identifier/INDEX (right).
+- [x] Realistic Hand-Torn Paper Architecture (Seeds 101–606) (§6):
+  - Zero `margin-bottom` on torn sections; zero vertical gap or separator strips.
+  - Seamless negative margin `margin-top: calc(var(--tear-h) * -1)` and `padding-top: var(--tear-h)` for receiving sections.
+  - Cascading z-index stacking (`Opening: 30` → `Personal Brand: 25` → `Writing Portfolio: 24` → `Content Marketing: 23` → `Example Strategy: 22` → `Project Campus: 21` → `Podcast: 20` → `Archive: 15` → `Contact: 10`) ensuring each torn section sits above the subsequent section, exposing the actual underlying section paper through the jagged transparent SVG mask.
+  - Outer `drop-shadow(0 6px 8px rgba(0,0,0,0.18))` casts natural depth onto the underlying section.
+  - Grain texture is bounded inside `torn-paper-section` and masked with the torn SVG contour, preventing grain from leaking across sections.
+- [x] Comprehensive Unit Tests (`src/lib/sections.test.ts`):
+  - 4 unit tests verifying section sequence, seeds 101–606, embedded button positions, and Contact channel fidelity.
+  - All 29 unit tests passing across 6 test suites.
+- [x] All Quality Gates Passed:
+  - `npm run typecheck` (PASS, 0 errors)
+  - `npm test` (PASS, 29/29 tests passing)
+  - `npm run check:refs` (PASS)
+  - `npm run check:media` (PASS)
+  - `npm run build` (PASS, built in 10.31s)
+
